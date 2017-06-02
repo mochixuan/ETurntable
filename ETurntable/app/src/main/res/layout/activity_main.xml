@@ -9,7 +9,7 @@
     <com.wx.eturntable.ETurntableMenuView
         android:id="@+id/etb_menu_view"
         android:layout_centerInParent="true"
-        android:layout_width="720dp"
-        android:layout_height="480dp" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </RelativeLayout>

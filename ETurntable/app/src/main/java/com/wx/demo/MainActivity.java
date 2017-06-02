@@ -1,8 +1,10 @@
 package com.wx.demo;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.wx.eturntable.ETurntableMenuView;
@@ -19,10 +21,23 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initWindows();
         setContentView(R.layout.activity_main);
 
         initView();
         initData();
+
+    }
+
+    private void initWindows() {
+
+        WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
+        int width = manager.getDefaultDisplay().getWidth();
+        int height = manager.getDefaultDisplay().getHeight();
+
+        if (width<height) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
 
     }
 

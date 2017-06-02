@@ -17,6 +17,6 @@
         android:visibility="gone"
         android:layout_height="wrap_content"
         android:textColor="@android:color/white"
-        android:textSize="18sp" />
+        android:textSize="14sp" />
 
 </LinearLayout>
