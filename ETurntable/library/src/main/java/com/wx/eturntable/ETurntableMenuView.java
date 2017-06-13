@@ -103,7 +103,7 @@ public class ETurntableMenuView extends ViewGroup{
         final int childCount = getChildCount();
         int left, top;
         int cWidth = (int) (mRadius * RADIO_DEFAULT_CHILD_DIMENSION);
-        float angleDelay = 360 /getChildCount();
+        float angleDelay = 360*1.0f /getChildCount();
 
         for (int i = 0; i < childCount; i++) {
             final View child = getChildAt(i);
@@ -123,15 +123,15 @@ public class ETurntableMenuView extends ViewGroup{
             }
 
             mStartAngle %= 360;
+
             float tmp = mRadius / 2f - cWidth / 2 - mPadding;                  //剩余长度  toRadians 将角度转换为弧度
-            left = (int) (mWidth / 2 + (int) (Math.round(tmp * Math.cos(Math.toRadians(mStartAngle)) )*mStretchX- 1 / 2f * cWidth));
-            top = (int) (mHeight / 2 + (int) (Math.round(tmp * Math.sin(Math.toRadians(mStartAngle)) )*mStretchY- 1 / 2f * cWidth));
+            left = (mWidth / 2 + (int) (Math.round(tmp * Math.cos(Math.toRadians(mStartAngle)) )*mStretchX- 1 / 2f * cWidth));
+            top = (mHeight / 2 + (int) (Math.round(tmp * Math.sin(Math.toRadians(mStartAngle)) )*mStretchY- 1 / 2f * cWidth));
 
             child.layout(left, top, left + cWidth, top + cWidth);
 
             mStartAngle += angleDelay;
         }
-
     }
 
     @Override
@@ -153,11 +153,11 @@ public class ETurntableMenuView extends ViewGroup{
                 float start = getAngle(mLastX, mLastY);
                 float end = getAngle(x, y);
                 if (getQuadrant(x, y) == 1 || getQuadrant(x, y) == 4) {
-                    mStartAngle += end - start;
-                    mTmpAngle += end - start;
+                    mStartAngle += (end - start);
+                    mTmpAngle += (end - start);
                 } else {
-                    mStartAngle += start - end;
-                    mTmpAngle += start - end;
+                    mStartAngle += (start - end);
+                    mTmpAngle += (start - end);
                 }
                 requestLayout();
                 mLastX = x;
