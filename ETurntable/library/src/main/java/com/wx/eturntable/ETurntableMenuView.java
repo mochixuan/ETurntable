@@ -31,7 +31,7 @@ public class ETurntableMenuView extends ViewGroup{
 
     private float mPadding;
 
-    private double mStartAngle = 0;
+    private double mStartAngle = 90;
 
     private String[] mItemTexts;
 
@@ -166,7 +166,7 @@ public class ETurntableMenuView extends ViewGroup{
             case MotionEvent.ACTION_UP:
 
                 float angleDelay = 360 /getChildCount();
-                autoFling(Math.round(mStartAngle/angleDelay)*angleDelay);
+                autoFling(Math.round((mStartAngle-90)/angleDelay)*angleDelay+90);
 
                 if (Math.abs(mTmpAngle) > NOCLICK_VALUE) {
                     return true;
