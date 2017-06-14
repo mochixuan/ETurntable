@@ -19,7 +19,7 @@ public class ETurntableMenuView extends ViewGroup{
     private int mWidth;
     private int mHeight;
 
-    private static final float RADIO_DEFAULT_CHILD_DIMENSION = 1 / 4f;
+    private static final float RADIO_DEFAULT_CHILD_DIMENSION = 1 / 3f;
 
     private static final float RADIO_PADDING_LAYOUT = 1 / 12f;
 
@@ -43,6 +43,8 @@ public class ETurntableMenuView extends ViewGroup{
 
     private float mLastX;
     private float mLastY;
+
+    private float mAngleDelay;
 
     private int mMenuItemLayoutId = R.layout.eturntable_menu_item;
 
@@ -103,7 +105,7 @@ public class ETurntableMenuView extends ViewGroup{
         final int childCount = getChildCount();
         int left, top;
         int cWidth = (int) (mRadius * RADIO_DEFAULT_CHILD_DIMENSION);
-        float angleDelay = 360*1.0f /getChildCount();
+        mAngleDelay = 360*1.0f /getChildCount();
 
         for (int i = 0; i < childCount; i++) {
             final View child = getChildAt(i);
@@ -125,12 +127,13 @@ public class ETurntableMenuView extends ViewGroup{
             mStartAngle %= 360;
 
             float tmp = mRadius / 2f - cWidth / 2 - mPadding;                  //剩余长度  toRadians 将角度转换为弧度
+
             left = (mWidth / 2 + (int) (Math.round(tmp * Math.cos(Math.toRadians(mStartAngle)) )*mStretchX- 1 / 2f * cWidth));
             top = (mHeight / 2 + (int) (Math.round(tmp * Math.sin(Math.toRadians(mStartAngle)) )*mStretchY- 1 / 2f * cWidth));
 
             child.layout(left, top, left + cWidth, top + cWidth);
 
-            mStartAngle += angleDelay;
+            mStartAngle += mAngleDelay;
         }
     }
 
@@ -165,8 +168,7 @@ public class ETurntableMenuView extends ViewGroup{
                 break;
             case MotionEvent.ACTION_UP:
 
-                float angleDelay = 360 /getChildCount();
-                autoFling(Math.round((mStartAngle-90)/angleDelay)*angleDelay+90);
+                autoFling(autoStartAngle());
 
                 if (Math.abs(mTmpAngle) > NOCLICK_VALUE) {
                     return true;
@@ -183,7 +185,7 @@ public class ETurntableMenuView extends ViewGroup{
         if (mAnimator == null) {
             mAnimator = new ValueAnimator();
         } else {
-            mAnimator.cancel();
+            cancleAnimation();
         }
         mAnimator.setIntValues();
         mAnimator.setFloatValues(((float)mStartAngle),endAngle);
@@ -196,7 +198,6 @@ public class ETurntableMenuView extends ViewGroup{
                 mStartAngle = mCurAngle;
                 requestLayout();
             }
-
         });
         mAnimator.start();
     }
@@ -204,6 +205,31 @@ public class ETurntableMenuView extends ViewGroup{
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         return true;
+    }
+
+    //清理动画 ,可以在OnPause调用可防止内存泄露
+    public void cancleAnimation() {
+        if (mAnimator != null && mAnimator.isRunning()) {
+            mAnimator.cancel();
+        }
+    }
+
+    private float autoStartAngle() {
+        return Math.round((mStartAngle-90)/mAngleDelay)*mAngleDelay+90;
+    }
+
+    public void slide(boolean isClockwise) {
+        if (isClockwise) {
+            autoFling(autoStartAngle()+mAngleDelay);
+        } else {
+            autoFling(autoStartAngle()-mAngleDelay);
+        }
+    }
+
+    //当转动的时候会出现getChildCount()，所以要进行逻辑处理
+    public int getCurPosition() {
+        int position = getChildCount() - (int) Math.round((mStartAngle-90+360)%360/mAngleDelay);
+        return position;
     }
 
     private float getAngle(float xTouch, float yTouch) {
