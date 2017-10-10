@@ -1,58 +1,45 @@
 package com.wx.demo;
 
-import android.content.pm.ActivityInfo;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.Toast;
-
-import com.wx.eturntable.ETurntableMenuView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ETurntableMenuView mETurntableMenuView;
-
-    private int[] mImgItems = new int[]{R.mipmap.icon_chicken_1,R.mipmap.icon_fox_2,R.mipmap.icon_crab_3,
-            R.mipmap.icon_koala_4,R.mipmap.icon_zebra_5,R.mipmap.icon_tiger_6,
-            R.mipmap.icon_pig_7,R.mipmap.icon_hippo_8};
-    private String[] mTextItems = new String[]{"公鸡","狐狸","螃蟹","考拉","小马","老虎","小猪","河马"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initWindows();
         setContentView(R.layout.activity_main);
 
-        initView();
-        initData();
-
-    }
-
-    private void initWindows() {
-
-        WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
-        int width = manager.getDefaultDisplay().getWidth();
-        int height = manager.getDefaultDisplay().getHeight();
-
-        if (width<height) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
-
-    }
-
-    private void initView() {
-        mETurntableMenuView = (ETurntableMenuView) findViewById(R.id.etb_menu_view);
-    }
-
-    private void initData() {
-        mETurntableMenuView.setMenuItemIconsAndTexts(mImgItems,mTextItems);
-        mETurntableMenuView.setOnMenuItemClickListener(new ETurntableMenuView.OnMenuItemClickListener() {
+        findViewById(R.id.btn1).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void itemClick(View view, int pos) {
-                Toast.makeText(MainActivity.this, mTextItems[pos], Toast.LENGTH_SHORT).show();
+            public void onClick(View view) {
+                openActivity(SixCircleActivity.class);
             }
         });
+
+        findViewById(R.id.btn2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openActivity(SevenActivity.class);
+            }
+        });
+
+        findViewById(R.id.btn3).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openActivity(MoreActivity.class);
+            }
+        });
+
+    }
+
+    private void openActivity(Class<? extends Activity> other) {
+        Intent intent = new Intent(this,other);
+        startActivity(intent);
     }
 
 }

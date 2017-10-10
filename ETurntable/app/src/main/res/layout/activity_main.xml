@@ -1,15 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@mipmap/icon_bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    android:orientation="vertical"
     tools:context="com.wx.demo.MainActivity">
 
-    <com.wx.eturntable.ETurntableMenuView
-        android:id="@+id/etb_menu_view"
-        android:layout_centerInParent="true"
+    <Button
+        android:id="@+id/btn1"
+        android:text="六角圆形"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content" />
 
-</RelativeLayout>
+    <Button
+        android:id="@+id/btn2"
+        android:text="七边椭圆形"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/btn3"
+        android:text="演示"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

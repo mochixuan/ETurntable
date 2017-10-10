@@ -2,6 +2,7 @@ package com.wx.eturntable;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -48,11 +49,11 @@ public class ETurntableMenuView extends ViewGroup{
 
     private int mMenuItemLayoutId = R.layout.eturntable_menu_item;
 
-    //尽量保证最大值为1，在布局里将图片文字设置大点，放大会失真
+    //Try to ensure that the maximum value is 1, in the layout of the picture text set larger points, amplification will be distorted
     private float mMaxSize = 1.0f;
     private float mMinSize = 0.6f;
 
-    //拉伸成椭圆
+    //Stretch into ellipse
     private float mStretchX = 1.6f;
     private float mStretchY = 0.6f;
 
@@ -66,10 +67,16 @@ public class ETurntableMenuView extends ViewGroup{
 
     public ETurntableMenuView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        TypedArray typedArray = context.obtainStyledAttributes(attrs,R.styleable.ETurntableMenuView);
+        mMaxSize = typedArray.getFloat(R.styleable.ETurntableMenuView_children_max_scale,1.0f);
+        mMinSize = typedArray.getFloat(R.styleable.ETurntableMenuView_children_min_scale,0.6f);
+        typedArray.recycle();
+
         setPadding(0, 0, 0, 0);
     }
 
-    //最好写固定值，没做兼容
+    //Best to write fixed values, not compatible
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 
@@ -96,7 +103,7 @@ public class ETurntableMenuView extends ViewGroup{
 
             child.measure(makeMeasureSpec, makeMeasureSpec);
         }
-        //mPadding = RADIO_PADDING_LAYOUT * mRadius;            //取消Padding
+        //mPadding = RADIO_PADDING_LAYOUT * mRadius;            //Padding
     }
 
     @Override
@@ -207,7 +214,7 @@ public class ETurntableMenuView extends ViewGroup{
         return true;
     }
 
-    //清理动画 ,可以在OnPause调用可防止内存泄露
+    //Cleaning animations can be called in OnPause to prevent memory leaks
     public void cancleAnimation() {
         if (mAnimator != null && mAnimator.isRunning()) {
             mAnimator.cancel();
@@ -226,7 +233,7 @@ public class ETurntableMenuView extends ViewGroup{
         }
     }
 
-    //当转动的时候会出现getChildCount()，所以要进行逻辑处理
+    //When rotated, getChildCount () occurs, so logical processing is necessary
     public int getCurPosition() {
         int position = getChildCount() - (int) Math.round((mStartAngle-90+360)%360/mAngleDelay);
         return position;
@@ -305,7 +312,6 @@ public class ETurntableMenuView extends ViewGroup{
         return Math.min(outMetrics.widthPixels, outMetrics.heightPixels);
     }
 
-    //监听
     public interface OnMenuItemClickListener {
         void itemClick(View view, int pos);
 

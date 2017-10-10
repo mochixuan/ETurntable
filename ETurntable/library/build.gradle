@@ -1,11 +1,16 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
 
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
 
+    lintOptions {
+        abortOnError false
+    }
+
     defaultConfig {
-        minSdkVersion 14
+        minSdkVersion 11
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -19,6 +24,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+}
+
+publish {
+    userOrg = 'wangxuan'
+    groupId = 'com.wangxuan.library'
+    artifactId = 'eturntablemenuview'
+    publishVersion = '1.0'
+    desc = 'First'
+    website = 'https://github.com/mochixuan/ETurntable/tree/master/ETurntable/library'
 }
 
 dependencies {
